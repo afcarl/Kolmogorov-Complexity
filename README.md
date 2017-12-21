@@ -22,4 +22,4 @@ Random with seed 1.
 
 # input5
 
-JPG file. Retriving by accessing the remote server. (github 233)
+JPG file. Retrieving by accessing the remote server. (github 233)
