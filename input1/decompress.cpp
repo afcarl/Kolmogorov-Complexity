@@ -6,11 +6,8 @@ char buf[N];
 int buf_size, cur;
 
 typedef unsigned long long ull;
-const ull CODE_VALUE_BITS  = 16;
-const ull FREQUENCY_BITS = 16;
-const ull MAXC = (1ull << CODE_VALUE_BITS) - 1;
-const ull MAXT = (1ull << FREQUENCY_BITS) - 1;
-const ull QUAR = (1ull << CODE_VALUE_BITS - 2);
+const ull MAXC = 65535;
+const ull QUAR = 16384;
 const ull HALF = QUAR * 2;
 const ull THRQ = QUAR * 3;
 
@@ -26,7 +23,7 @@ map<ull, Model> freq[MAXO + 1];
 void model_init() {
     cur = -1;
     freq[0][0ull] = Model();
-    freq[0][0ull].f[256] = 1; // for escape
+    freq[0][0ull].f[256] = 1;
     freq[0][0ull].c = 1;
 }
 set<int> ex_mask;
@@ -73,7 +70,7 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
                 low = tot - t;
                 high = tot;
                 c = i;
-                v = MAXT;
+                v = MAXC;
             }
         }
     if (c == -1) {
@@ -99,7 +96,7 @@ void update(int c, int ord) {
             freq[i][key].f[c] = 1;
             freq[i][key].f[256] = 1;
         } else {
-            if (freq[i][key].c < MAXT) {
+            if (freq[i][key].c < MAXC) {
                 ++freq[i][key].c;
                 ++freq[i][key].f[c];
             }
@@ -137,7 +134,7 @@ void decompress() {
     ull value = 0, _tot, _low, _high;
     int ord, c;
     bool escape;
-    for (int i = 0; i < CODE_VALUE_BITS; ++i)
+    for (int i = 0; i < 16; ++i)
         value = value << 1 | next_bit();
     for (;;) {
         ord = get_ord();
