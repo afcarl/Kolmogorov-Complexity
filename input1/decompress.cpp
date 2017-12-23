@@ -48,7 +48,6 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
         tot = 257;
         v = (l * tot - 1) / r;
         c = low = v;
-        //if (c == 256) exit(0);
         high = low + 1;
         return false;
     }
