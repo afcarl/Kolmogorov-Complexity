@@ -86,22 +86,34 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
     return false;
 }
 
-void update(int c) {
+void update(int c, int ord) {
+    // printf("%d %d\n", c, ord);
+    //if (ord == -1) return;
     ull key = 0;
-    for (int ord = 0; ord <= MAXO; ++ord) {
-        if (freq[ord].count(key) == 0) {
-            freq[ord].insert(make_pair(key, Model()));
-            freq[ord][key].c = 2;
-            freq[ord][key].f[c] = 1;
-            freq[ord][key].f[256] = 1;
+    for (int i = 0; i < ord; ++i) {
+        key = key << 8 | buf[cur - i];
+    }
+    for (int i = max(ord, 0); i <= MAXO; ++i) {
+        if (freq[i].count(key) == 0) {
+            freq[i].insert(make_pair(key, Model()));
+            freq[i][key].c = 2;
+            freq[i][key].f[c] = 1;
+            freq[i][key].f[256] = 1;
         } else {
-            if (freq[ord][key].c < MAXT) {
-                ++freq[ord][key].c;
-                ++freq[ord][key].f[c];
+            if (freq[i][key].c >= MAXT) {
+                freq[i][key].c = 0;
+                for (int j = 0; j < 256; ++j) {
+                    freq[i][key].f[j] /= 2;
+                    freq[i][key].c += freq[i][key].f[j];
+                }
+                freq[i][key].c += freq[i][key].f[256];
             }
+            ++freq[i][key].c;
+            ++freq[i][key].f[c];
+            ///printf("%d %ull\n", i, key);
         }
-        if (cur - ord >= 0)
-            key = key << 8 | buf[cur - ord];
+        if (cur - i >= 0)
+            key = key << 8 | buf[cur - i];
         else break;
     }
 }
@@ -162,7 +174,7 @@ void decompress() {
                 value += next_bit() ? 1 : 0;
             }
             if (c != 256) {
-                update(c);
+                update(c, ord);
                 buf[++cur] = c;
                 cout << bitset<8>(c);
             }
