@@ -2,7 +2,7 @@
 using namespace std;
 
 const int N = 1e6;
-char buf[N];
+unsigned char buf[N];
 int buf_size, cur;
 
 typedef unsigned long long ull;
@@ -106,7 +106,7 @@ void update(int c) {
     }
 }
 
-char ibuf[N];
+unsigned char ibuf[N];
 int ibuf_size, icur, mask;
 void read_init() {
     ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));

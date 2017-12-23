@@ -1,9 +1,11 @@
-import sys, os
+import sys, os, time
 os.system("g++ compress.cpp")
 os.system("a.exe")
 os.system("g++ decompress.cpp")
+start = time.time()
 os.system("a.exe > result.temp")
-if open("result.temp", "r").read() != open("input1.txt", "r").read():
+print("Decompression used time {0}s".format(time.time() - start))
+if open("result.temp", "r").read() != open("input2.txt", "r").read():
     print("Error!")
 else:
     print("OK!")

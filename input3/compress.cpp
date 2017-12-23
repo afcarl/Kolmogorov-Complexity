@@ -2,8 +2,13 @@
 using namespace std;
 
 const int N = 1e6;
-char buf[N];
+unsigned char buf[N];
 int buf_size, cur;
+void read_init() {
+    buf_size = fread(buf, 1, N, fopen("i.b", "rb"));
+    cur = -1;
+}
+
 
 typedef unsigned long long ull;
 const ull CODE_VALUE_BITS  = 16;
@@ -15,6 +20,12 @@ const ull HALF = QUAR * 2;
 const ull THRQ = QUAR * 3;
 
 const int MAXO = 4;
+// -1  等频率, 都是1, 0-255. 这都匹配不到, 那必然是EOF到了.
+//  0  纯出现频率
+//  1  1阶上文
+//  2  2阶上文
+//  3  3阶上文
+//  4  4阶上文
 struct Model {
     map<int, int> f;
     int c;
@@ -24,11 +35,16 @@ struct Model {
 };
 map<ull, Model> freq[MAXO + 1];
 void model_init() {
-    cur = -1;
     freq[0][0ull] = Model();
     freq[0][0ull].f[256] = 1; // for escape
     freq[0][0ull].c = 1;
 }
+
+/*
+PPM上文预测. 首先查找最远为5的上文, 如果命中则取预测概率进行编码, 否则降阶.
+如果当前符号在0频率区, 则取escaep跳转到更低阶的上文. 跳转情况下不应该移动
+当前编码位置. 如果escape到-2阶, 则结束编码.
+*/
 set<int> ex_mask;
 int get_ord() {
     ex_mask.clear();
@@ -43,42 +59,32 @@ int get_ord() {
     return ord - 1;
 }
 
-bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
-    ull key = 0, v;
+bool get_prob(int c, int&ord, ull&tot, ull&low, ull&high) {
+    ull key = 0;
     for (int i = 0; i < ord; ++i)
         key = key << 8 | buf[cur - i];
     if (ord == -1) {
         tot = 257;
-        v = (l * tot - 1) / r;
-        c = low = v;
-        //if (c == 256) exit(0);
+        low = c;
         high = low + 1;
+        if (c == 256) --ord;
         return false;
     }
     tot = 0;
-    for (int i = 0; i < 257; ++i)
-        if (ex_mask.find(i) == ex_mask.end())
-            tot += freq[ord][key].f[i];
-    v = (l * tot - 1) / r;
-
-    tot = 0;
-    c = -1;
     for (int i = 0; i < 256; ++i)
         if (ex_mask.find(i) == ex_mask.end()) {
             int t = freq[ord][key].f[i];
             tot += t;
             if (t != 0) ex_mask.insert(i);
-            if (tot > v && c == -1) {
+            if (c == i) {
                 low = tot - t;
                 high = tot;
-                c = i;
-                v = MAXT;
             }
-        }
-    if (c == -1) {
-        c = 256;
+    }
+    if (low == high || c == 256) {
         low = tot;
-        high = tot = tot + freq[ord][key].f[256];
+        high = tot + freq[ord][key].f[256];
+        tot = high;
         --ord;
         return true;
     }
@@ -106,75 +112,86 @@ void update(int c) {
     }
 }
 
-char ibuf[N];
-int ibuf_size, icur, mask;
-void read_init() {
-    ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));
-    icur = 0;
-    mask = 0x80;
-}
-bool next_bit() {
-    bool ret = mask & ibuf[icur];
-    mask >>= 1;
-    if (mask == 0) {
-        mask = 0x80;
-        if (icur < ibuf_size)
-            ++icur;
-        else ibuf[icur] = 0;
+ofstream out("c", ios::binary);
+char oc;
+int cnt;
+int byte_count = 0;
+void put_bit(int b) {
+    oc = oc << 1 | b;
+    ++cnt;
+    if (cnt == 8) {
+        out.write(&oc, 1);
+        oc = 0;
+        cnt = 0;
+        ++byte_count;
+        assert(byte_count < 1000000);
     }
-    return ret;
+}
+void close_output() {
+    if (cnt > 0) {
+        oc = oc << (8 - cnt);
+        out.write(&oc, 1);
+        cnt = 0;
+    }
+}
+void put(int b, int&pending_bits) {
+    put_bit(b);
+    while (pending_bits--) {
+        put_bit(!b);
+    }
+    pending_bits = 0;
 }
 
-void decompress() {
+void compress() {
     model_init();
 
-    ull high = MAXC;
+    int pending_bits = 0;
     ull low = 0;
-    ull value = 0, _tot, _low, _high;
-    int ord, c;
+    ull high = MAXC;
+    ull _tot, _low, _high;
+    int ord;
     bool escape;
-    for (int i = 0; i < CODE_VALUE_BITS; ++i)
-        value = value << 1 | next_bit();
     for (;;) {
         ord = get_ord();
+        int c = cur + 1 < buf_size ? buf[cur + 1] : 256;
         do {
+            escape = get_prob(c, ord, _tot, _low, _high);
             ull range = high - low + 1;
-            //ull sval = ((value - low + 1) * freq[257] - 1) / range;
-            escape = get_char(c, range, value - low + 1, ord, _tot, _low, _high);
-            //cout << c << endl;
-            high = low + (range * _high) / _tot - 1;
-            low = low + (range * _low) / _tot;
-            for(;;) {
+            high = low + range * _high / _tot - 1;
+            low = low + range * _low / _tot;
+            for (;;) {
+                // cout << low << ' ' << high << endl;
                 if (high < HALF) {
+                    put(0, pending_bits);
                 } else if (low >= HALF) {
-                    value -= HALF;
-                    low -= HALF;
-                    high -= HALF;
+                    put(1, pending_bits);
                 } else if (low >= QUAR && high < THRQ) {
-                    value -= QUAR;
+                    ++pending_bits;
                     low -= QUAR;
                     high -= QUAR;
                 } else break;
-                low <<= 1;
                 high <<= 1;
-                high++;
-                value <<= 1;
-                value += next_bit() ? 1 : 0;
+                high |= 1;
+                low <<= 1;
+                high &= MAXC;
+                low &= MAXC;
             }
-            if (c != 256) {
-                update(c);
-                buf[++cur] = c;
-                cout << bitset<8>(c);
-            }
-        } while (escape);
-        if (c == 256) break;
+        } while (escape && ord > -2);
+        if (ord == -2) break;
+        update(c);
+        ++cur;
+        //printf("%d\n", cur);
     }
+    ++pending_bits;
+    if (low < QUAR)
+        put(0, pending_bits);
+    else
+        put(1, pending_bits);
 }
 
 int main() {
-
     read_init();
-    decompress();
-
+    compress();
+    close_output();
     return 0;
 }
