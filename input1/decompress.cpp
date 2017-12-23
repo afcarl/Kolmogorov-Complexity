@@ -1,5 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+const int N = 1e6;
+char buf[N];
+int buf_size, cur;
+
 typedef unsigned long long ull;
 const ull CODE_VALUE_BITS  = 16;
 const ull FREQUENCY_BITS = 14;

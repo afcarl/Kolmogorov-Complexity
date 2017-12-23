@@ -1,5 +1,5 @@
 import sys, os
-os.system("g++ compress.cpp")
+os.system("g++ decompress.cpp")
 os.system("a.exe > result.temp")
 if open("result.temp", "r").read() != open("input1.txt", "r").read():
     print("Error!")
