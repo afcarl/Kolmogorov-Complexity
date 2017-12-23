@@ -56,16 +56,17 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
         return false;
     }
     tot = 0;
+    Model*m = &freq[ord][key];
     for (int i = 0; i < 257; ++i)
         if (ex_mask.find(i) == ex_mask.end())
-            tot += freq[ord][key].f[i];
+            tot += m->f[i];
     v = (l * tot - 1) / r;
 
     tot = 0;
     c = -1;
     for (int i = 0; i < 256; ++i)
         if (ex_mask.find(i) == ex_mask.end()) {
-            int t = freq[ord][key].f[i];
+            int t = m->f[i];
             tot += t;
             if (t != 0) ex_mask.insert(i);
             if (tot > v && c == -1) {
@@ -78,17 +79,15 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
     if (c == -1) {
         c = 256;
         low = tot;
-        high = tot = tot + freq[ord][key].f[256];
+        high = tot = tot + m->f[256];
         --ord;
         return true;
     }
-    tot += freq[ord][key].f[256];
+    tot += m->f[256];
     return false;
 }
 
 void update(int c, int ord) {
-    // printf("%d %d\n", c, ord);
-    //if (ord == -1) return;
     ull key = 0;
     for (int i = 0; i < ord; ++i) {
         key = key << 8 | buf[cur - i];
@@ -104,17 +103,6 @@ void update(int c, int ord) {
                 ++freq[i][key].c;
                 ++freq[i][key].f[c];
             }
-            // if (freq[i][key].c >= MAXT) {
-            //     freq[i][key].c = 0;
-            //     for (int j = 0; j < 256; ++j) {
-            //         freq[i][key].f[j] /= 2;
-            //         freq[i][key].c += freq[i][key].f[j];
-            //     }
-            //     freq[i][key].c += freq[i][key].f[256];
-            // }
-            // ++freq[i][key].c;
-            // ++freq[i][key].f[c];
-            ///printf("%d %ull\n", i, key);
         }
         if (cur - i >= 0)
             key = key << 8 | buf[cur - i];
@@ -155,9 +143,7 @@ void decompress() {
         ord = get_ord();
         do {
             ull range = high - low + 1;
-            //ull sval = ((value - low + 1) * freq[257] - 1) / range;
             escape = get_char(c, range, value - low + 1, ord, _tot, _low, _high);
-            //cout << c << endl;
             high = low + (range * _high) / _tot - 1;
             low = low + (range * _low) / _tot;
             for(;;) {

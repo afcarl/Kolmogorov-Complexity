@@ -13,3 +13,7 @@ if len(sys.argv) < 2:
     else:
         print("OK!")
         os.system("del result.temp")
+        source_size = len(open("decompress.cpp", "rb").read())
+        print("Total Length {0} = {1} + {2}".format(compressed_size + source_size, compressed_size, source_size))
+        os.system("git add .")
+        os.system('git commit -m "Shrinking file 1 {0} = {1} + {2}"'.format(compressed_size + source_size, compressed_size, source_size))
