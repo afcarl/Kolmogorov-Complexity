@@ -77,7 +77,7 @@ bool get_prob(int c, int&ord, ull&tot, ull&low, ull&high) {
     }
     tot = 0;
     for (int i = 0; i < 256; ++i)
-        if (ex_mask.find(i) == ex_mask.end()) {
+        if (true || ex_mask.find(i) == ex_mask.end()) {
             int t = freq[ord][key].f[i];
             tot += t;
             if (t != 0) ex_mask.insert(i);

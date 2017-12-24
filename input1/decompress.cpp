@@ -49,14 +49,14 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&o, ull&h) {
     tot = 0;
     Model*m = &f[ord][k];
     for (int i = 0; i < 257; ++i)
-        if (ex_mask.find(i) == ex_mask.end())
+        if (true || ex_mask.find(i) == ex_mask.end())
             tot += m->f[i];
     v = (l * tot - 1) / r;
 
     tot = 0;
     c = -1;
     for (int i = 0; i < 256; ++i)
-        if (ex_mask.find(i) == ex_mask.end()) {
+        if (true || ex_mask.find(i) == ex_mask.end()) {
             int t = m->f[i];
             tot += t;
             if (t != 0) ex_mask.insert(i);
@@ -94,11 +94,6 @@ void update(int c, int ord) {
 
 unsigned char ibuf[N];
 int ibuf_size, icur, mask;
-void read_init() {
-    ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));
-    icur = 0;
-    mask = 0x80;
-}
 bool next_bit() {
     bool ret = mask & ibuf[icur];
     mask >>= 1;
@@ -110,8 +105,11 @@ bool next_bit() {
     }
     return ret;
 }
+int main() {
+    ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));
+    icur = 0;
+    mask = 0x80;
 
-void decompress() {
     cur = -1;
     f[0][0]=Model();
 
@@ -154,12 +152,6 @@ void decompress() {
         } while (escape);
         if (c == 256) break;
     }
-}
-
-int main() {
-
-    read_init();
-    decompress();
 
     return 0;
 }
