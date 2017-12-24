@@ -9,10 +9,9 @@ void read_init() {
     cur = -1;
 }
 
-
 typedef unsigned long long ull;
 const ull CODE_VALUE_BITS  = 16;
-const ull FREQUENCY_BITS = 14;
+const ull FREQUENCY_BITS = 16;
 const ull MAXC = (1ull << CODE_VALUE_BITS) - 1;
 const ull MAXT = (1ull << FREQUENCY_BITS) - 1;
 const ull QUAR = (1ull << CODE_VALUE_BITS - 2);
@@ -26,6 +25,13 @@ const int MAXO = 4;
 //  2  2阶上文
 //  3  3阶上文
 //  4  4阶上文
+/*
+TODO:
+1. PPMd, better escape frequency choice.
+2. Improve efficiency
+
+*/
+
 struct Model {
     map<int, int> f;
     int c;
@@ -67,7 +73,6 @@ bool get_prob(int c, int&ord, ull&tot, ull&low, ull&high) {
         tot = 257;
         low = c;
         high = low + 1;
-        if (c == 256) --ord;
         return false;
     }
     tot = 0;
@@ -92,25 +97,42 @@ bool get_prob(int c, int&ord, ull&tot, ull&low, ull&high) {
     return false;
 }
 
-void update(int c) {
+void update(int c, int ord) {
+    // printf("%d %d\n", c, ord);
+    //if (ord == -1) return;
     ull key = 0;
-    for (int ord = 0; ord <= MAXO; ++ord) {
-        if (freq[ord].count(key) == 0) {
-            freq[ord].insert(make_pair(key, Model()));
-            freq[ord][key].c = 2;
-            freq[ord][key].f[c] = 1;
-            freq[ord][key].f[256] = 1;
+    for (int i = 0; i < ord; ++i) {
+        key = key << 8 | buf[cur - i];
+    }
+    for (int i = max(ord, 0); i <= MAXO; ++i) {
+        if (freq[i].count(key) == 0) {
+            freq[i].insert(make_pair(key, Model()));
+            freq[i][key].c = 2;
+            freq[i][key].f[c] = 1;
+            freq[i][key].f[256] = 1;
         } else {
-            if (freq[ord][key].c < MAXT) {
-                ++freq[ord][key].c;
-                ++freq[ord][key].f[c];
+            if (freq[i][key].c < MAXT) {
+                ++freq[i][key].c;
+                ++freq[i][key].f[c];
             }
+            // if (freq[i][key].c >= MAXT) {
+            //     freq[i][key].c = 0;
+            //     for (int j = 0; j < 256; ++j) {
+            //         freq[i][key].f[j] /= 2;
+            //         freq[i][key].c += freq[i][key].f[j];
+            //     }
+            //     freq[i][key].c += freq[i][key].f[256];
+            // }
+            // ++freq[i][key].c;
+            // ++freq[i][key].f[c];
+            ///printf("%d %ull\n", i, key);
         }
-        if (cur - ord >= 0)
-            key = key << 8 | buf[cur - ord];
+        if (cur - i >= 0)
+            key = key << 8 | buf[cur - i];
         else break;
     }
 }
+
 
 ofstream out("c", ios::binary);
 char oc;
@@ -176,9 +198,9 @@ void compress() {
                 high &= MAXC;
                 low &= MAXC;
             }
-        } while (escape && ord > -2);
-        if (ord == -2) break;
-        update(c);
+        } while (escape);
+        if (c == 256) break;
+        update(c, ord);
         ++cur;
         //printf("%d\n", cur);
     }
