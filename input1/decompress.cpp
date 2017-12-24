@@ -52,8 +52,7 @@ main(){
     f[0][0]=Model();
 
     ull h=C,o=0,V=0,Z,X,Y;
-    int d,c;
-    bool escape;
+    int d,c,E;
     V = B[0] << 16 | B[1] << 8 | B[2];
     I = 3;
     for (;;) {
@@ -68,7 +67,7 @@ main(){
         }
         do {
             ull r=h - o + 1,l=V - o + 1;
-            escape=get_char(c,r,l,d,Z,X,Y);
+            E=get_char(c,r,l,d,Z,X,Y);
 
 
 
@@ -84,7 +83,7 @@ main(){
                 V=V*2+(bool)(A&B[I]);
                 A/=2;A=!A?I+=I<S?1:B[I]=0,0x80:A;
             goto V;E:;
-        } while(escape);
+        } while(E);
         if(c == 256) break;
         for (i=max(d,0);i<=4;++i) {
             if(!f[i].count(k))f[i][k]=Model();
