@@ -3,7 +3,7 @@ using namespace std;
 const int N=1e6;
 int b_s,cur;
 unsigned char b[N],B[N];
-int S,I,m;
+int S,I,A;
 
 typedef unsigned long long ull;
 ull C=65535,Q=16384,H=Q*2,T=Q*3,k,v;
@@ -59,7 +59,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
 }
 main() {
     S=fread(B,1,N,fopen("c","rb"));
-    m=0x80;
+    A=0x80;
 
     cur=-1;
     f[0][0]=Model();
@@ -98,19 +98,19 @@ main() {
                     h -= Q;
                 } else goto E;
                 o*=2;h=h*2+1;
-                V=V*2+(bool)(m&B[I]);
-                m/=2;m=!m?I+=I<S?1:B[I]=0,0x80:m;
+                V=V*2+(bool)(A&B[I]);
+                A/=2;A=!A?I+=I<S?1:B[I]=0,0x80:A;
             goto V;E:;
         } while(escape);
         if(c == 256) break;
         for (int i=max(d,0);i<=MAXO;++i) {
-                    if(!f[i].count(k))f[i][k]=Model();
-                    f[i][k].u(c);
-                    if(cur - i >= 0)
-                        k=k << 8 | b[cur - i];
-                    else break;
-                }
-                b[++cur]=c;
-                cout<<bitset<8>(c);
+            if(!f[i].count(k))f[i][k]=Model();
+            f[i][k].u(c);
+            if(cur - i >= 0)
+                k=k << 8 | b[cur - i];
+            else break;
+        }
+        b[++cur]=c;
+        cout<<bitset<8>(c);
     }
 }
