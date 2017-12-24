@@ -3,24 +3,24 @@ using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
 typedef long long U;
-U C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y;
+U C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y,W=256;
 int S,I,A,R,e[257],i,d,c,E;
 struct D{
     map<int,int> f;int c;
-    D(){c=f[256]=1;}
+    D(){c=f[W]=1;}
     int u(int t){++c,++f[t];}
 };
 map<U,D> f[5];
 main(){
     S=fread(B,1,N,fopen("c","rb"));A=128;R=-1;
     f[0][0]=D();
-    V = *B << 16 | B[1] << 8 | B[2];
+    V = *B << 16 | B[1] *W | B[2];
     I = 3;
     for (;;) {
         fill(e,e+257,0);
         k=0;
         if(!~R)d=-1;else for(d=0;R-d+1&&d<4;++d) {
-            k=k << 8 | b[R - d];
+            k=k*W | b[R - d];
             if(!f[d+1].count(k)) {
                 k >>= 8;
                 break;
@@ -40,8 +40,8 @@ main(){
                 v=(l * Z - 1) / r;
 
                 Z=0;
-                c=256;
-                for (i=0;i<256;++i)
+                c=W;
+                for (i=0;i<W;++i)
                     if(!e[i]) {
                         int t=m->f[i];
                         e[i]=!!t;
@@ -71,7 +71,7 @@ main(){
             if(!f[i].count(k))f[i][k]=D();
             f[i][k].u(c);
             if(R-i+1)
-                k=k<<8|b[R-i];
+                k=k*W|b[R-i];
             else break;
         }
         b[++R]=c;
