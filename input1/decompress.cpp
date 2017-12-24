@@ -74,8 +74,8 @@ main(){
                 A/=2;A=!A?I+=I<S?1:B[I]=0,128:A;
             goto V;E:;
         } while(E);
-        if(c == 256) break;
-        for (i=max(d,0);i<=4;++i) {
+        if(c>>8) break;
+        for (i=max(d,0);i<5;++i) {
             if(!f[i].count(k))f[i][k]=D();
             f[i][k].u(c);
             if(R-i+1)
