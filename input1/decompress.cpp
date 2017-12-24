@@ -108,7 +108,12 @@ main() {
                     h -= Q;
                 } else break;
                 o*=2;h=h*2+1;
-                V=V*2+next_bit();
+                V=V*2+(bool)(m&ib[icur]);
+                m /= 2;
+                if(m == 0) {
+                    m=0x80;
+                    icur += icur<ib_s?1:ib[icur]=0;
+                }
             }
             if(c != 256) {
                 for (int i=max(d,0);i<=MAXO;++i) {
