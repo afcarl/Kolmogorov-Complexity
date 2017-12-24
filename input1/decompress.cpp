@@ -82,7 +82,7 @@ bool next_bit() {
     }
     return ret;
 }
-int main() {
+main() {
     ib_s=fread(ib,1,N,fopen("c","rb"));
     m=0x80;
 
@@ -136,6 +136,4 @@ int main() {
         } while(escape);
         if(c == 256) break;
     }
-
-    return 0;
 }
