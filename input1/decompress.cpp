@@ -3,8 +3,8 @@ using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
 typedef unsigned long long ull;
-ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
-int S,I,A,R,e[257],i;
+ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o=0,V=0,Z,X,Y;
+int S,I,A,R,e[257],i,d,c,E;
 struct D{
     map<int,int> f;int c;
     D(){c=f[256]=1;}
@@ -14,9 +14,6 @@ map<ull,D> f[5];
 main(){
     S=fread(B,1,N,fopen("c","rb"));A=128;R=-1;
     f[0][0]=D();
-
-    ull h=C,o=0,V=0,Z,X,Y;
-    int d,c,E;
     V = *B << 16 | B[1] << 8 | B[2];
     I = 3;
     for (;;) {
