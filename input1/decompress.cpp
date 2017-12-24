@@ -6,7 +6,7 @@ unsigned char b[N],B[N];
 int S,I,A;
 
 typedef unsigned long long ull;
-ull C=65535,Q=16384,H=Q*2,T=Q*3,k,v;
+ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
 
 const int MAXO=4;
 struct Model{
@@ -69,8 +69,8 @@ main() {
     ull V=0,_tot,_o,_h;
     int d,c;
     bool escape;
-    V = B[0] << 8 | B[1];
-    I = 2;
+    V = B[0] << 16 | B[1] << 8 | B[2];
+    I = 3;
     for (;;) {
         e.clear();
         k=0;

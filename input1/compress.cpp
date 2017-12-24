@@ -10,8 +10,8 @@ void read_init() {
 }
 
 typedef unsigned long long ull;
-const ull CODE_VALUE_BITS  = 16;
-const ull FREQUENCY_BITS = 16;
+const ull CODE_VALUE_BITS  = 24;
+const ull FREQUENCY_BITS = 24;
 const ull MAXC = (1ull << CODE_VALUE_BITS) - 1;
 const ull MAXT = (1ull << FREQUENCY_BITS) - 1;
 const ull QUAR = (1ull << CODE_VALUE_BITS - 2);
