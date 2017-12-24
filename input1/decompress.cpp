@@ -2,19 +2,15 @@
 using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
-int S,I,A,R;
-
 typedef unsigned long long ull;
 ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
-
-const int MAXO=4;
+int S,I,A,R,e[257];
 struct Model{
     map<int,int> f;int c;
     Model(){c=f[256]=1;}
     int u(int t){++c,++f[t];}
 };
-map<ull,Model> f[MAXO + 1];
-set<int> e;
+map<ull,Model> f[5];
 bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {    
     if(d == -1) {
         tot=257;
@@ -27,17 +23,17 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     tot=0;
     Model*m=&f[d][k];
     for (int i=0;i < 257;++i)
-        if(!e.count(i))
+        if(!e[i])
             tot += m->f[i];
     v=(l * tot - 1) / r;
 
     tot=0;
     c=-1;
     for (int i=0;i < 256;++i)
-        if(!e.count(i)) {
+        if(!e[i]) {
             int t=m->f[i];
             tot += t;
-            if(t != 0) e.insert(i);
+            if(t != 0) e[i]=1;
             if(tot > v && c == -1) {
                 o=tot - t;
                 h=tot;
@@ -71,9 +67,9 @@ main() {
     V = B[0] << 16 | B[1] << 8 | B[2];
     I = 3;
     for (;;) {
-        e.clear();
+        memset(e,0,257*4);
         k=0;
-        if(!~R)d=-1;else for (d=0;R - d >= 0 && d<MAXO;++d) {
+        if(!~R)d=-1;else for (d=0;R - d >= 0 && d<4;++d) {
             k=k << 8 | b[R - d];
             if(f[d+1].count(k) == 0) {
                 k >>= 8;
@@ -96,7 +92,7 @@ main() {
             goto V;E:;
         } while(escape);
         if(c == 256) break;
-        for (int i=max(d,0);i<=MAXO;++i) {
+        for (int i=max(d,0);i<=4;++i) {
             if(!f[i].count(k))f[i][k]=Model();
             f[i][k].u(c);
             if(R-i+1)
