@@ -57,16 +57,6 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     tot += m->f[256];
     return false;
 }
-
-bool next_bit() {
-    bool ret=m & ib[icur];
-    m >>= 1;
-    if(m == 0) {
-        m=0x80;
-        icur += icur<ib_s?1:ib[icur]=0;
-    }
-    return ret;
-}
 main() {
     ib_s=fread(ib,1,N,fopen("c","rb"));
     m=0x80;
@@ -109,7 +99,7 @@ main() {
                 } else break;
                 o*=2;h=h*2+1;
                 V=V*2+(bool)(m&ib[icur]);
-                m/=2;m=!m?icur += icur<ib_s?1:ib[icur]=0,0x80:m;
+                m/=2;m=!m?icur+=icur<ib_s?1:ib[icur]=0,0x80:m;
             }
             if(c != 256) {
                 for (int i=max(d,0);i<=MAXO;++i) {
