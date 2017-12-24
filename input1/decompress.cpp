@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 const int N = 1e6;
 char buf[N];
 int buf_size, cur;
@@ -15,17 +14,9 @@ const int MAXO = 4;
 struct Model {
     map<int, int> f;
     int c;
-    Model() {
-        c = 0;
-    }
+    Model() {c=f[256]=1;}
 };
 map<ull, Model> f[MAXO + 1];
-void model_init() {
-    cur = -1;
-    f[0][0ull] = Model();
-    f[0][0ull].f[256] = 1;
-    f[0][0ull].c = 1;
-}
 set<int> ex_mask;
 int get_ord() {
     ex_mask.clear();
@@ -89,16 +80,10 @@ void update(int c, int ord) {
         k = k << 8 | buf[cur - i];
     }
     for (int i = max(ord, 0); i <= MAXO; ++i) {
-        if (f[i].count(k) == 0) {
-            f[i].insert(make_pair(k, Model()));
-            f[i][k].c = 2;
-            f[i][k].f[c] = 1;
-            f[i][k].f[256] = 1;
-        } else {
-            if (f[i][k].c < MAXC) {
-                ++f[i][k].c;
-                ++f[i][k].f[c];
-            }
+        if (!f[i].count(k))f[i][k]=Model();
+        if (f[i][k].c < MAXC) {
+            ++f[i][k].c;
+            ++f[i][k].f[c];
         }
         if (cur - i >= 0)
             k = k << 8 | buf[cur - i];
@@ -106,7 +91,7 @@ void update(int c, int ord) {
     }
 }
 
-char ibuf[N];
+unsigned char ibuf[N];
 int ibuf_size, icur, mask;
 void read_init() {
     ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));
@@ -126,7 +111,8 @@ bool next_bit() {
 }
 
 void decompress() {
-    model_init();
+    cur = -1;
+    f[0][0]=Model();
 
     ull high = MAXC;
     ull low = 0;
