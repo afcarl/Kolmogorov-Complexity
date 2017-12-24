@@ -15,6 +15,10 @@ struct Model {
     map<int, int> f;
     int c;
     Model() {c=f[256]=1;}
+    int u(int t) {
+        if (c < MAXC)
+            ++c, ++f[t];
+    }
 };
 map<ull, Model> f[MAXO + 1];
 set<int> ex_mask;
@@ -81,10 +85,7 @@ void update(int c, int ord) {
     }
     for (int i = max(ord, 0); i <= MAXO; ++i) {
         if (!f[i].count(k))f[i][k]=Model();
-        if (f[i][k].c < MAXC) {
-            ++f[i][k].c;
-            ++f[i][k].f[c];
-        }
+        f[i][k].u(c);
         if (cur - i >= 0)
             k = k << 8 | buf[cur - i];
         else break;
