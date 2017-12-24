@@ -107,9 +107,7 @@ main() {
                     o -= Q;
                     h -= Q;
                 } else break;
-                o <<= 1;
-                h <<= 1;
-                h++;
+                o*=2;h=h*2+1;
                 value <<= 1;
                 value += next_bit() ? 1 : 0;
             }
