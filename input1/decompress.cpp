@@ -2,15 +2,15 @@
 using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
-typedef unsigned long long ull;
-ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y;
+typedef unsigned long long U;
+U C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y;
 int S,I,A,R,e[257],i,d,c,E;
 struct D{
     map<int,int> f;int c;
     D(){c=f[256]=1;}
     int u(int t){++c,++f[t];}
 };
-map<ull,D> f[5];
+map<U,D> f[5];
 main(){
     S=fread(B,1,N,fopen("c","rb"));A=128;R=-1;
     f[0][0]=D();
@@ -27,7 +27,7 @@ main(){
             }
         }
         do {
-            ull r=h - o + 1,l=V - o + 1;
+            U r=h - o + 1,l=V - o + 1;
             E=0;
             if(d == -1) {
                 Z=257;
