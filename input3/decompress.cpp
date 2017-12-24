@@ -1,180 +1,110 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int N=1e6;
+int b_s,cur;
+unsigned char b[N],B[N];
+int S,I,A;
 
-const int N = 1e6;
-unsigned char buf[N];
-int buf_size, cur;
 typedef unsigned long long ull;
-const ull CODE_VALUE_BITS  = 16;
-const ull FREQUENCY_BITS = 16;
-const ull MAXC = (1ull << CODE_VALUE_BITS) - 1;
-const ull MAXT = (1ull << FREQUENCY_BITS) - 1;
-const ull QUAR = (1ull << CODE_VALUE_BITS - 2);
-const ull HALF = QUAR * 2;
-const ull THRQ = QUAR * 3;
+ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
 
-const int MAXO = 4;
-struct Model {
-    map<int, int> f;
-    int c;
-    Model() {
-        c = 0;
-    }
+const int MAXO=4;
+struct Model{
+    map<int,int> f;int c;
+    Model(){c=f[256]=1;}
+    int u(int t){++c,++f[t];}
 };
-map<ull, Model> f[MAXO + 1];
-void model_init() {
-    cur = -1;
-    f[0][0ull] = Model();
-    f[0][0ull].f[256] = 1;
-    f[0][0ull].c = 1;
-}
-set<int> ex_mask;
-int get_ord() {
-    ex_mask.clear();
-    ull k = 0;
-    if (cur == -1) return -1;
-    int ord = 1;
-    for (; cur - ord + 1 >= 0 && ord <= MAXO; ++ord) {
-        k = k << 8 | buf[cur - ord + 1];
-        if (f[ord].count(k) == 0)
-            break;
-    }
-    return ord - 1;
-}
-
-bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
-    ull k = 0, v;
-    for (int i = 0; i < ord; ++i)
-        k = k << 8 | buf[cur - i];
-    if (ord == -1) {
-        tot = 257;
-        v = (l * tot - 1) / r;
-        c = low = v;
-        high = low + 1;
+map<ull,Model> f[MAXO + 1];
+set<int> e;
+bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {    
+    if(d == -1) {
+        tot=257;
+        v=(l * tot - 1) / r;
+        c=o=v;
+        h=o + 1;
         return false;
     }
-    tot = 0;
-    Model*m = &f[ord][k];
-    for (int i = 0; i < 257; ++i)
-        if (ex_mask.find(i) == ex_mask.end())
-            tot += m->f[i];
-    v = (l * tot - 1) / r;
 
-    tot = 0;
-    c = -1;
-    for (int i = 0; i < 256; ++i)
-        if (ex_mask.find(i) == ex_mask.end()) {
-            int t = m->f[i];
+    tot=0;
+    Model*m=&f[d][k];
+    for (int i=0;i < 257;++i)
+        if(!e.count(i))
+            tot += m->f[i];
+    v=(l * tot - 1) / r;
+
+    tot=0;
+    c=-1;
+    for (int i=0;i < 256;++i)
+        if(!e.count(i)) {
+            int t=m->f[i];
             tot += t;
-            if (t != 0) ex_mask.insert(i);
-            if (tot > v && c == -1) {
-                low = tot - t;
-                high = tot;
-                c = i;
-                v = MAXC;
+            if(t != 0) e.insert(i);
+            if(tot > v && c == -1) {
+                o=tot - t;
+                h=tot;
+                c=i;
+                v=C;
             }
         }
-    if (c == -1) {
-        c = 256;
-        low = tot;
-        high = tot = tot + m->f[256];
-        --ord;
+    if(c == -1) {
+        c=256;
+        o=tot;
+        h=tot=tot + m->f[256];
+        --d;
+        k >>= 8;
         return true;
     }
     tot += m->f[256];
     return false;
 }
+main() {
+    S=fread(B,1,N,fopen("c","rb"));
+    A=0x80;
 
-void update(int c, int ord) {
-    ull k = 0;
-    for (int i = 0; i < ord; ++i) {
-        k = k << 8 | buf[cur - i];
-    }
-    for (int i = max(ord, 0); i <= MAXO; ++i) {
-        if (f[i].count(k) == 0) {
-            f[i].insert(make_pair(k, Model()));
-            f[i][k].c = 2;
-            f[i][k].f[c] = 1;
-            f[i][k].f[256] = 1;
-        } else {
-            if (f[i][k].c < MAXC) {
-                ++f[i][k].c;
-                ++f[i][k].f[c];
+    cur=-1;
+    f[0][0]=Model();
+
+    ull h=C;
+    ull o=0;
+    ull V=0,_tot,_o,_h;
+    int d,c;
+    bool escape;
+    V = B[0] << 16 | B[1] << 8 | B[2];
+    I = 3;
+    for (;;) {
+        e.clear();
+        k=0;
+        if(!~cur)d=-1;else for (d=0;cur - d >= 0 && d<MAXO;++d) {
+            k=k << 8 | b[cur - d];
+            if(f[d+1].count(k) == 0) {
+                k >>= 8;
+                break;
             }
         }
-        if (cur - i >= 0)
-            k = k << 8 | buf[cur - i];
-        else break;
-    }
-}
-
-unsigned char  ibuf[N];
-int ibuf_size, icur, mask;
-void read_init() {
-    ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));
-    icur = 0;
-    mask = 0x80;
-}
-bool next_bit() {
-    bool ret = mask & ibuf[icur];
-    mask >>= 1;
-    if (mask == 0) {
-        mask = 0x80;
-        if (icur < ibuf_size)
-            ++icur;
-        else ibuf[icur] = 0;
-    }
-    return ret;
-}
-
-void decompress() {
-    model_init();
-
-    ull high = MAXC;
-    ull low = 0;
-    ull value = 0, _tot, _low, _high;
-    int ord, c;
-    bool escape;
-    for (int i = 0; i < 16; ++i)
-        value = value << 1 | next_bit();
-    for (;;) {
-        ord = get_ord();
         do {
-            ull range = high - low + 1;
-            escape = get_char(c, range, value - low + 1, ord, _tot, _low, _high);
-            high = low + (range * _high) / _tot - 1;
-            low = low + (range * _low) / _tot;
-            for(;;) {
-                if (high < HALF) {
-                } else if (low >= HALF) {
-                    value -= HALF;
-                    low -= HALF;
-                    high -= HALF;
-                } else if (low >= QUAR && high < THRQ) {
-                    value -= QUAR;
-                    low -= QUAR;
-                    high -= QUAR;
-                } else break;
-                low <<= 1;
-                high <<= 1;
-                high++;
-                value <<= 1;
-                value += next_bit() ? 1 : 0;
-            }
-            if (c != 256) {
-                update(c, ord);
-                buf[++cur] = c;
-                cout << bitset<8>(c);
-            }
-        } while (escape);
-        if (c == 256) break;
+            ull range=h - o + 1;
+            escape=get_char(c,range,V - o + 1,d,_tot,_o,_h);
+            h=o + (range * _h) / _tot - 1;
+            o=o + (range * _o) / _tot;
+            V:
+                if(o>=H)
+                    V-=H,o-=H,h-=H; 
+                    else if(o>=Q&&h<T)V-=Q,o-=Q,h-=Q;
+                else if(h>=H)goto E;
+                o*=2;h=h*2+1;
+                V=V*2+(bool)(A&B[I]);
+                A/=2;A=!A?I+=I<S?1:B[I]=0,0x80:A;
+            goto V;E:;
+        } while(escape);
+        if(c == 256) break;
+        for (int i=max(d,0);i<=MAXO;++i) {
+            if(!f[i].count(k))f[i][k]=Model();
+            f[i][k].u(c);
+            if(cur-i+1)
+                k=k<<8|b[cur-i];
+            else break;
+        }
+        b[++cur]=c;
+        cout<<bitset<8>(c);
     }
-}
-
-int main() {
-
-    read_init();
-    decompress();
-
-    return 0;
 }
