@@ -86,7 +86,7 @@ main() {
             escape=get_char(c,range,V - o + 1,d,_tot,_o,_h);
             h=o + (range * _h) / _tot - 1;
             o=o + (range * _o) / _tot;
-            for(;;) {
+            V:
                 if(h < H) {
                 } else if(o >= H) {
                     V -= H;
@@ -96,11 +96,11 @@ main() {
                     V -= Q;
                     o -= Q;
                     h -= Q;
-                } else break;
+                } else goto E;
                 o*=2;h=h*2+1;
                 V=V*2+(bool)(m&B[I]);
                 m/=2;m=!m?I+=I<S?1:B[I]=0,0x80:m;
-            }
+            goto V;E:
             if(c != 256) {
                 for (int i=max(d,0);i<=MAXO;++i) {
                     if(!f[i].count(k))f[i][k]=Model();
@@ -110,7 +110,7 @@ main() {
                     else break;
                 }
                 b[++cur]=c;
-                cout << bitset<8>(c);
+                cout<<bitset<8>(c);
             }
         } while(escape);
         if(c == 256) break;
