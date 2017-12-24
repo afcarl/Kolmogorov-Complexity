@@ -12,7 +12,7 @@ const int MAXO=4;
 struct Model{
     map<int,int> f;int c;
     Model(){c=f[256]=1;}
-    int u(int t){if(c<C)++c,++f[t];}
+    int u(int t){++c,++f[t];}
 };
 map<ull,Model> f[MAXO + 1];
 set<int> e;
