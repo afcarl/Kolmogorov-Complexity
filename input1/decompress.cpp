@@ -46,11 +46,11 @@ main(){
                     if(!e[i]) {
                         int t=m->f[i];
                         e[i]=!!t;
-                        if(v<(Z+=t))
+                        v<(Z+=t) ? 
                             X=Z - t,
                             Y=Z,
                             c=i,
-                            v=C;
+                            v=C:0;
                     }
                 ++Z;
                 if(c>>8)
@@ -59,8 +59,8 @@ main(){
                     --d,k>>=8,
                     E=1;
             }
-            h=o + (r * Y) / Z - 1;
-            o=o + (r * X) / Z;
+            h=o + r * Y / Z - 1;
+            o+=r * X / Z;
             V:
                 if(o>=H)
                     V-=H,o-=H,h-=H; 
