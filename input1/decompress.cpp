@@ -114,8 +114,6 @@ main() {
                 value += next_bit() ? 1 : 0;
             }
             if(c != 256) {
-                k=0;
-                for (int i=0;i<d;++i)k=k<<8|b[cur-i];
                 for (int i=max(d,0);i<=MAXO;++i) {
                     if(!f[i].count(k))f[i][k]=Model();
                     f[i][k].u(c);
