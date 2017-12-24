@@ -5,18 +5,15 @@ unsigned char b[N],B[N];
 typedef unsigned long long ull;
 ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
 int S,I,A,R,e[257],i;
-struct Model{
+struct D{
     map<int,int> f;int c;
-    Model(){c=f[256]=1;}
+    D(){c=f[256]=1;}
     int u(int t){++c,++f[t];}
 };
-map<ull,Model> f[5];
-bool get_char(int &c,ull r,ull l,int&d,ull&Z,ull&X,ull&Y) {    
-
-}
+map<ull,D> f[5];
 main(){
     S=fread(B,1,N,fopen("c","rb"));A=0x80;R=-1;
-    f[0][0]=Model();
+    f[0][0]=D();
 
     ull h=C,o=0,V=0,Z,X,Y;
     int d,c,E;
@@ -42,7 +39,7 @@ main(){
                 Y=X + 1;
             } else {
                 Z=0;
-                Model*m=&f[d][k];
+                D*m=&f[d][k];
                 for (i=0;i < 257;++i)Z += m->f[i]*!e[i];
                 v=(l * Z - 1) / r;
 
@@ -68,10 +65,6 @@ main(){
                     E=true;
                 } 
             }
-
-
-
-
             h=o + (r * Y) / Z - 1;
             o=o + (r * X) / Z;
             V:
@@ -86,7 +79,7 @@ main(){
         } while(E);
         if(c == 256) break;
         for (i=max(d,0);i<=4;++i) {
-            if(!f[i].count(k))f[i][k]=Model();
+            if(!f[i].count(k))f[i][k]=D();
             f[i][k].u(c);
             if(R-i+1)
                 k=k<<8|b[R-i];
