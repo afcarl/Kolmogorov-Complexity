@@ -23,8 +23,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     tot=0;
     Model*m=&f[d][k];
     for (int i=0;i < 257;++i)
-        if(!e[i])
-            tot += m->f[i];
+            tot += m->f[i]*!e[i];
     v=(l * tot - 1) / r;
 
     tot=0;
