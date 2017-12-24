@@ -20,13 +20,13 @@ int get_d() {
     e.clear();
     k=0;
     if(cur == -1) return -1;
-    int d=1;
-    for (;cur - d + 1 >= 0 && d<=MAXO;++d) {
-        k=k << 8 | b[cur - d + 1];
-        if(f[d].count(k) == 0)
+    int d=0;
+    for (;cur - d >= 0 && d<MAXO;++d) {
+        k=k << 8 | b[cur - d];
+        if(f[d+1].count(k) == 0)
             break;
     }
-    return d - 1;
+    return d;
 }
 
 bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {    
