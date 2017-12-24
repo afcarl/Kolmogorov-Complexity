@@ -88,11 +88,11 @@ main() {
             o=o + (range * _o) / _tot;
             V:
                 if(h < H) {
-                } else if(o >= H) {
+                } else if(h>=H&&o >= H) {
                     V -= H;
                     o -= H;
                     h -= H;
-                } else if(o >= Q && h < T) {
+                } else if(h>=H&&o >= Q && h < T) {
                     V -= Q;
                     o -= Q;
                     h -= Q;
