@@ -28,7 +28,7 @@ main(){
         }
         do {
             ull r=h - o + 1,l=V - o + 1;
-            E=false;
+            E=0;
             if(d == -1) {
                 Z=257;
                 v=(l * Z - 1) / r;
@@ -53,13 +53,12 @@ main(){
                             c=i,
                             v=C;
                     }
-                    ++Z;
-                if(c>>8) {
-                    X=Z-1;
-                    Y=Z;
-                    --d;k>>=8;
-                    E=true;
-                } 
+                ++Z;
+                if(c>>8)
+                    X=Z-1,
+                    Y=Z,
+                    --d,k>>=8,
+                    E=1;
             }
             h=o + (r * Y) / Z - 1;
             o=o + (r * X) / Z;
