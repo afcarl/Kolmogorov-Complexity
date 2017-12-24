@@ -4,7 +4,7 @@ const int N=1e6;
 unsigned char b[N],B[N];
 typedef unsigned long long ull;
 ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
-int S,I,A,R,e[257];
+int S,I,A,R,e[257],i;
 struct Model{
     map<int,int> f;int c;
     Model(){c=f[256]=1;}
@@ -21,7 +21,6 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     }
     tot=0;
     Model*m=&f[d][k];
-    int i;
     for (i=0;i < 257;++i)tot += m->f[i]*!e[i];
     v=(l * tot - 1) / r;
 
@@ -88,7 +87,7 @@ main() {
             goto V;E:;
         } while(escape);
         if(c == 256) break;
-        for (int i=max(d,0);i<=4;++i) {
+        for (i=max(d,0);i<=4;++i) {
             if(!f[i].count(k))f[i][k]=Model();
             f[i][k].u(c);
             if(R-i+1)
