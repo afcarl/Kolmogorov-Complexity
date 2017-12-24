@@ -91,7 +91,7 @@ main() {
                     V -= H;
                     o -= H;
                     h -= H;
-                } else if(o >= Q && h < T&&h >= H) {
+                } else if(o >= Q && h < T) {
                     V -= Q;
                     o -= Q;
                     h -= Q;
