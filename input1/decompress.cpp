@@ -101,7 +101,7 @@ main() {
             if(!f[i].count(k))f[i][k]=Model();
             f[i][k].u(c);
             if(cur-i+1)
-                k=k << 8 | b[cur - i];
+                k=k<<8|b[cur-i];
             else break;
         }
         b[++cur]=c;
