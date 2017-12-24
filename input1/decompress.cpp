@@ -3,7 +3,7 @@ using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
 typedef unsigned long long ull;
-ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o=0,V=0,Z,X,Y;
+ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y;
 int S,I,A,R,e[257],i,d,c,E;
 struct D{
     map<int,int> f;int c;
@@ -70,7 +70,7 @@ main(){
                     else if(o>=Q&&h<T)V-=Q,o-=Q,h-=Q;
                 else if(h>=H)goto E;
                 o*=2;h=h*2+1;
-                V=V*2+(bool)(A&B[I]);
+                V=V*2+!!(A&B[I]);
                 A/=2;A=!A?I+=I<S?1:B[I]=0,0x80:A;
             goto V;E:;
         } while(E);
