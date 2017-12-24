@@ -6,34 +6,42 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #define MAXPENDING 5 /* Max connection requests */
-#define BUFFSIZE 32
+#define BUFFSIZE 65536
 void Die(char *mess)
 {
     perror(mess);
     exit(1);
 }
 
+FILE* fin;
+char buffer[BUFFSIZE];
 void HandleClient(int sock)
 {
-    char buffer[BUFFSIZE];
-    int received = -1;
+    int received = -1, read;
     if ((received = recv(sock, buffer, BUFFSIZE, 0)) < 0)
     {
         Die("Failed to receive initial bytes from client");
     }
-    while (received > 0)
+    fin = fopen("input5.txt", "rb");
+    if (received > 0)
     {
-        if (send(sock, buffer, received, 0) != received)
-        {
-            Die("Failed to send bytes to client");
+        while ((read = fread(buffer, 1, BUFFSIZE-1, fin)) > 0) {
+            buffer[read] = 0;
+            send(sock, buffer, read, 0);
         }
-        if ((received = recv(sock, buffer, BUFFSIZE, 0)) < 0)
-        {
-            Die("Failed to receive additional bytes from client");
-        }
+        // if (send(sock, buffer, received, 0) != received)
+        // {
+        //     Die("Failed to send bytes to client");
+        // }
+        // if ((received = recv(sock, buffer, BUFFSIZE, 0)) < 0)
+        // {
+        //     Die("Failed to receive additional bytes from client");
+        // }
     }
+    fclose(fin);
     close(sock);
 }
+
 
 int main(int argc, char *argv[])
 {

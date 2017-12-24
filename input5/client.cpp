@@ -9,13 +9,11 @@
 #include <stdlib.h>     /* for exit() */
 FILE*fout;
 void output(char*buf, int size) {
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0x80; j; j>>=1)
-            putc("10"[!!(j & buf[i])], fout);
-    }
+    buf[size] = 0;
+    fprintf(fout, "%s", buf);
 }
 
-#define RCVBUFSIZE 32   /* Size of receive buffer */
+#define RCVBUFSIZE 65536   /* Size of receive buffer */
 int main(int argc, char *argv[])
 {
     fout = fopen("r.txt", "w");
@@ -67,12 +65,13 @@ int main(int argc, char *argv[])
 
     /* Receive the same string back from the server */
     totalBytesRcvd = 0;
-    while (totalBytesRcvd < echoStringLen)
+    while (true)
     {
         /* Receive up to the buffer size (minus 1 to leave space for 
            a null terminator) bytes from the sender */
         (bytesRcvd = recv(sock, echoBuffer, RCVBUFSIZE - 1, 0));
         totalBytesRcvd += bytesRcvd;   /* Keep tally of total bytes */
+        if (bytesRcvd == 0) break;
         output(echoBuffer, bytesRcvd);
     }
 
