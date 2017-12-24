@@ -2,7 +2,7 @@
 using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
-typedef unsigned long long U;
+typedef long long U;
 U C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y;
 int S,I,A,R,e[257],i,d,c,E;
 struct D{
