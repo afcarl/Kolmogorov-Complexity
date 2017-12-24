@@ -5,10 +5,7 @@ char b[N];
 int b_size,cur;
 
 typedef unsigned long long ull;
-const ull C=65535;
-const ull Q=16384;
-const ull H=Q * 2;
-const ull T=Q * 3;
+const ull C=65535,Q=16384,H=Q*2,T=Q*3;
 
 const int MAXO=4;
 struct Model {
