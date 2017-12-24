@@ -47,16 +47,11 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     } ++tot;
     return false;
 }
-main() {
-    S=fread(B,1,N,fopen("c","rb"));
-    A=0x80;
-
-    R=-1;
+main(){
+    S=fread(B,1,N,fopen("c","rb"));A=0x80;R=-1;
     f[0][0]=Model();
 
-    ull h=C;
-    ull o=0;
-    ull V=0,_tot,_o,_h;
+    ull h=C,o=0,V=0,_tot,_o,_h;
     int d,c;
     bool escape;
     V = B[0] << 16 | B[1] << 8 | B[2];
@@ -64,7 +59,7 @@ main() {
     for (;;) {
         memset(e,0,257*4);
         k=0;
-        if(!~R)d=-1;else for (d=0;R - d >= 0 && d<4;++d) {
+        if(!~R)d=-1;else for(d=0;R-d+1&&d<4;++d) {
             k=k << 8 | b[R - d];
             if(f[d+1].count(k) == 0) {
                 k >>= 8;
