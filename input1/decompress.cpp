@@ -11,40 +11,40 @@ struct Model{
     int u(int t){++c,++f[t];}
 };
 map<ull,Model> f[5];
-bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {    
+bool get_char(int &c,ull r,ull l,int&d,ull&Z,ull&X,ull&Y) {    
     if(d == -1) {
-        tot=257;
-        v=(l * tot - 1) / r;
-        c=o=v;
-        h=o + 1;
+        Z=257;
+        v=(l * Z - 1) / r;
+        c=X=v;
+        Y=X + 1;
         return false;
     }
-    tot=0;
+    Z=0;
     Model*m=&f[d][k];
-    for (i=0;i < 257;++i)tot += m->f[i]*!e[i];
-    v=(l * tot - 1) / r;
+    for (i=0;i < 257;++i)Z += m->f[i]*!e[i];
+    v=(l * Z - 1) / r;
 
-    tot=0;
+    Z=0;
     c=-1;
     for (i=0;i < 256;++i)
         if(!e[i]) {
             int t=m->f[i];
-            tot += t;
+            Z += t;
             if(t != 0) e[i]=1;
-            if(tot > v && c == -1) {
-                o=tot - t;
-                h=tot;
+            if(Z > v && c == -1) {
+                X=Z - t;
+                Y=Z;
                 c=i;
                 v=C;
             }
         }
     if(c == -1) {
         c=256;
-        o=tot;
-        h=tot=tot+1;
+        X=Z;
+        Y=Z=Z+1;
         --d;k>>=8;
         return true;
-    } ++tot;
+    } ++Z;
     return false;
 }
 main(){
@@ -61,7 +61,7 @@ main(){
         k=0;
         if(!~R)d=-1;else for(d=0;R-d+1&&d<4;++d) {
             k=k << 8 | b[R - d];
-            if(f[d+1].count(k) == 0) {
+            if(!f[d+1].count(k)) {
                 k >>= 8;
                 break;
             }
@@ -69,6 +69,10 @@ main(){
         do {
             ull range=h - o + 1;
             escape=get_char(c,range,V - o + 1,d,_tot,_o,_h);
+
+
+
+
             h=o + (range * _h) / _tot - 1;
             o=o + (range * _o) / _tot;
             V:
