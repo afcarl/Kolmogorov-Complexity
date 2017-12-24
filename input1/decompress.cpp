@@ -45,9 +45,8 @@ main(){
                 for (i=0;i<256;++i)
                     if(!e[i]) {
                         int t=m->f[i];
-                        Z += t;
                         e[i]=!!t;
-                        if(Z > v)
+                        if(v<(Z+=t))
                             X=Z - t,
                             Y=Z,
                             c=i,
