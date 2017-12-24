@@ -79,8 +79,8 @@ main() {
     ull value=0,_tot,_o,_h;
     int d,c;
     bool escape;
-    for (int i=0;i < 16;++i)
-        value=value << 1 | next_bit();
+    value = ib[0] << 8 | ib[1];
+    icur = 2;
     for (;;) {
         e.clear();
         k=0;
