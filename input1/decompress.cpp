@@ -100,7 +100,7 @@ main() {
         for (int i=max(d,0);i<=MAXO;++i) {
             if(!f[i].count(k))f[i][k]=Model();
             f[i][k].u(c);
-            if(cur - i >= 0)
+            if(cur-i+1)
                 k=k << 8 | b[cur - i];
             else break;
         }
