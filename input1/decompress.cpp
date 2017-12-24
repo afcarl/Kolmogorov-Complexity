@@ -6,7 +6,7 @@ unsigned char b[N],ib[N];
 int ib_s,icur,m;
 
 typedef unsigned long long ull;
-const ull C=65535,Q=16384,H=Q*2,T=Q*3;
+ull C=65535,Q=16384,H=Q*2,T=Q*3,k,v;
 
 const int MAXO=4;
 struct Model{
@@ -18,7 +18,7 @@ map<ull,Model> f[MAXO + 1];
 set<int> e;
 int get_d() {
     e.clear();
-    ull k=0;
+    k=0;
     if(cur == -1) return -1;
     int d=1;
     for (;cur - d + 1 >= 0 && d<=MAXO;++d) {
@@ -30,7 +30,7 @@ int get_d() {
 }
 
 bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
-    ull k=0,v;
+    k=0;
     for (int i=0;i < d;++i)
         k=k << 8 | b[cur - i];
     if(d == -1) {
@@ -73,7 +73,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
 }
 
 void update(int c,int d) {
-    ull k=0;
+    k=0;
     for (int i=0;i<d;++i)k=k<<8|b[cur-i];
     for (int i=max(d,0);i<=MAXO;++i) {
         if(!f[i].count(k))f[i][k]=Model();
