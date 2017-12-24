@@ -10,8 +10,8 @@ void read_init() {
 }
 
 typedef unsigned long long ull;
-const ull CODE_VALUE_BITS  = 16;
-const ull FREQUENCY_BITS = 14;
+const ull CODE_VALUE_BITS  = 24;
+const ull FREQUENCY_BITS = 24;
 const ull MAXC = (1ull << CODE_VALUE_BITS) - 1;
 const ull MAXT = (1ull << FREQUENCY_BITS) - 1;
 const ull QUAR = (1ull << CODE_VALUE_BITS - 2);
@@ -111,10 +111,8 @@ void update(int c, int ord) {
             freq[i][key].f[c] = 1;
             freq[i][key].f[256] = 1;
         } else {
-            if (freq[i][key].c < MAXT) {
-                ++freq[i][key].c;
-                ++freq[i][key].f[c];
-            }
+            ++freq[i][key].c;
+            ++freq[i][key].f[c];
             // if (freq[i][key].c >= MAXT) {
             //     freq[i][key].c = 0;
             //     for (int j = 0; j < 256; ++j) {
