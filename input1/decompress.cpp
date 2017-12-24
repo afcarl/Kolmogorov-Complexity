@@ -71,7 +71,7 @@ main(){
                 else if(h>=H)goto E;
                 o*=2;h=h*2+1;
                 V=V*2+!!(A&B[I]);
-                A/=2;A=!A?I+=I<S?1:B[I]=0,0x80:A;
+                A/=2;A=!A?I+=I<S?1:B[I]=0,128:A;
             goto V;E:;
         } while(E);
         if(c == 256) break;
