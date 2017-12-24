@@ -72,7 +72,7 @@ main(){
             goto V;E:;
         } while(E);
         if(c>>8) break;
-        for (i=max(d,0);i<5;++i) {
+        for (i=d+!~d;i<5;++i) {
             if(!f[i].count(k))f[i][k]=D();
             f[i][k].u(c);
             if(R-i+1)
