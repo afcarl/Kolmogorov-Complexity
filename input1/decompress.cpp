@@ -18,34 +18,35 @@ bool get_char(int &c,ull r,ull l,int&d,ull&Z,ull&X,ull&Y) {
         c=X=v;
         Y=X + 1;
         return false;
-    }
-    Z=0;
-    Model*m=&f[d][k];
-    for (i=0;i < 257;++i)Z += m->f[i]*!e[i];
-    v=(l * Z - 1) / r;
+    } else {
+        Z=0;
+        Model*m=&f[d][k];
+        for (i=0;i < 257;++i)Z += m->f[i]*!e[i];
+        v=(l * Z - 1) / r;
 
-    Z=0;
-    c=-1;
-    for (i=0;i < 256;++i)
-        if(!e[i]) {
-            int t=m->f[i];
-            Z += t;
-            if(t != 0) e[i]=1;
-            if(Z > v && c == -1) {
-                X=Z - t;
-                Y=Z;
-                c=i;
-                v=C;
+        Z=0;
+        c=-1;
+        for (i=0;i < 256;++i)
+            if(!e[i]) {
+                int t=m->f[i];
+                Z += t;
+                if(t != 0) e[i]=1;
+                if(Z > v) {
+                    X=Z - t;
+                    Y=Z;
+                    c=i;
+                    v=C;
+                }
             }
-        }
-    if(c == -1) {
-        c=256;
-        X=Z;
-        Y=Z=Z+1;
-        --d;k>>=8;
-        return true;
-    } ++Z;
-    return false;
+        if(c == -1) {
+            c=256;
+            X=Z;
+            Y=Z=Z+1;
+            --d;k>>=8;
+            return true;
+        } ++Z;
+        return false;
+    }
 }
 main(){
     S=fread(B,1,N,fopen("c","rb"));A=0x80;R=-1;
