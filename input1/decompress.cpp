@@ -49,14 +49,14 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&o, ull&h) {
     tot = 0;
     Model*m = &f[ord][k];
     for (int i = 0; i < 257; ++i)
-        if (true || ex_mask.find(i) == ex_mask.end())
+        if (ex_mask.find(i) == ex_mask.end())
             tot += m->f[i];
     v = (l * tot - 1) / r;
 
     tot = 0;
     c = -1;
     for (int i = 0; i < 256; ++i)
-        if (true || ex_mask.find(i) == ex_mask.end()) {
+        if (ex_mask.find(i) == ex_mask.end()) {
             int t = m->f[i];
             tot += t;
             if (t != 0) ex_mask.insert(i);
