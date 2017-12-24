@@ -37,7 +37,7 @@ main(){
             } else {
                 Z=0;
                 D*m=&f[d][k];
-                for (i=0;i < 257;++i)Z += m->f[i]*!e[i];
+                for (i=257;~--i;)Z += m->f[i]*!e[i];
                 v=(l * Z - 1) / r;
 
                 Z=0;
