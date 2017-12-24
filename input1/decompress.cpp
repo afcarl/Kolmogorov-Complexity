@@ -5,10 +5,10 @@ char b[N];
 int b_size,cur;
 
 typedef unsigned long long ull;
-const ull MAXC=65535;
-const ull QUAR=16384;
-const ull HALF=QUAR * 2;
-const ull THRQ=QUAR * 3;
+const ull C=65535;
+const ull Q=16384;
+const ull H=Q * 2;
+const ull T=Q * 3;
 
 const int MAXO=4;
 struct Model {
@@ -16,7 +16,7 @@ struct Model {
     int c;
     Model() {c=f[256]=1;}
     int u(int t) {
-        if (c < MAXC)
+        if (c < C)
             ++c,++f[t];
     }
 };
@@ -64,7 +64,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
                 o=tot - t;
                 h=tot;
                 c=i;
-                v=MAXC;
+                v=C;
             }
         }
     if (c == -1) {
@@ -110,7 +110,7 @@ int main() {
     cur=-1;
     f[0][0]=Model();
 
-    ull h=MAXC;
+    ull h=C;
     ull o=0;
     ull value=0,_tot,_o,_h;
     int d,c;
@@ -125,15 +125,15 @@ int main() {
             h=o + (range * _h) / _tot - 1;
             o=o + (range * _o) / _tot;
             for(;;) {
-                if (h < HALF) {
-                } else if (o >= HALF) {
-                    value -= HALF;
-                    o -= HALF;
-                    h -= HALF;
-                } else if (o >= QUAR && h < THRQ) {
-                    value -= QUAR;
-                    o -= QUAR;
-                    h -= QUAR;
+                if (h < H) {
+                } else if (o >= H) {
+                    value -= H;
+                    o -= H;
+                    h -= H;
+                } else if (o >= Q && h < T) {
+                    value -= Q;
+                    o -= Q;
+                    h -= Q;
                 } else break;
                 o <<= 1;
                 h <<= 1;
