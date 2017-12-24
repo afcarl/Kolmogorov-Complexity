@@ -25,8 +25,8 @@ bool get_char(int &c,ull r,ull l,int&d,ull&Z,ull&X,ull&Y) {
         v=(l * Z - 1) / r;
 
         Z=0;
-        c=-1;
-        for (i=0;i < 256;++i)
+        c=256;
+        for (i=0;i<256;++i)
             if(!e[i]) {
                 int t=m->f[i];
                 Z += t;
@@ -38,8 +38,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&Z,ull&X,ull&Y) {
                     v=C;
                 }
             }
-        if(c == -1) {
-            c=256;
+        if(c>>8) {
             X=Z;
             Y=Z=Z+1;
             --d;k>>=8;
