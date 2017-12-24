@@ -29,10 +29,7 @@ int get_d() {
     return d - 1;
 }
 
-bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
-    k=0;
-    for (int i=0;i < d;++i)
-        k=k << 8 | b[cur - i];
+bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {    
     if(d == -1) {
         tot=257;
         v=(l * tot - 1) / r;
@@ -40,6 +37,10 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
         h=o + 1;
         return false;
     }
+    k=0;
+    for (int i=0;i < d;++i)
+        k=k << 8 | b[cur - i];
+
     tot=0;
     Model*m=&f[d][k];
     for (int i=0;i < 257;++i)
@@ -72,17 +73,6 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     return false;
 }
 
-void update(int c,int d) {
-    k=0;
-    for (int i=0;i<d;++i)k=k<<8|b[cur-i];
-    for (int i=max(d,0);i<=MAXO;++i) {
-        if(!f[i].count(k))f[i][k]=Model();
-        f[i][k].u(c);
-        if(cur - i >= 0)
-            k=k << 8 | b[cur - i];
-        else break;
-    }
-}
 bool next_bit() {
     bool ret=m & ib[icur];
     m >>= 1;
@@ -131,7 +121,15 @@ int main() {
                 value += next_bit() ? 1 : 0;
             }
             if(c != 256) {
-                update(c,d);
+                k=0;
+                for (int i=0;i<d;++i)k=k<<8|b[cur-i];
+                for (int i=max(d,0);i<=MAXO;++i) {
+                    if(!f[i].count(k))f[i][k]=Model();
+                    f[i][k].u(c);
+                    if(cur - i >= 0)
+                        k=k << 8 | b[cur - i];
+                    else break;
+                }
                 b[++cur]=c;
                 cout << bitset<8>(c);
             }
