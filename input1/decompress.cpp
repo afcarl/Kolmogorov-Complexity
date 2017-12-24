@@ -44,12 +44,10 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     if(c == -1) {
         c=256;
         o=tot;
-        h=tot=tot + m->f[256];
-        --d;
-        k >>= 8;
+        h=tot=tot+1;
+        --d;k>>=8;
         return true;
-    }
-    tot += m->f[256];
+    } ++tot;
     return false;
 }
 main() {
