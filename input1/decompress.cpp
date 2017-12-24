@@ -86,8 +86,7 @@ main() {
     for (;;) {
         e.clear();
         k=0;
-        if(cur == -1) d=-1; else
-        for (d=0;cur - d >= 0 && d<MAXO;++d) {
+        if(!~cur)d=-1;else for (d=0;cur - d >= 0 && d<MAXO;++d) {
             k=k << 8 | b[cur - d];
             if(f[d+1].count(k) == 0)
                 break;
