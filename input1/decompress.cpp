@@ -76,10 +76,10 @@ main() {
 
     ull h=C;
     ull o=0;
-    ull value=0,_tot,_o,_h;
+    ull V=0,_tot,_o,_h;
     int d,c;
     bool escape;
-    value = ib[0] << 8 | ib[1];
+    V = ib[0] << 8 | ib[1];
     icur = 2;
     for (;;) {
         e.clear();
@@ -93,23 +93,23 @@ main() {
         }
         do {
             ull range=h - o + 1;
-            escape=get_char(c,range,value - o + 1,d,_tot,_o,_h);
+            escape=get_char(c,range,V - o + 1,d,_tot,_o,_h);
             h=o + (range * _h) / _tot - 1;
             o=o + (range * _o) / _tot;
             for(;;) {
                 if(h < H) {
                 } else if(o >= H) {
-                    value -= H;
+                    V -= H;
                     o -= H;
                     h -= H;
                 } else if(o >= Q && h < T) {
-                    value -= Q;
+                    V -= Q;
                     o -= Q;
                     h -= Q;
                 } else break;
                 o*=2;h=h*2+1;
-                value <<= 1;
-                value += next_bit() ? 1 : 0;
+                V <<= 1;
+                V += next_bit() ? 1 : 0;
             }
             if(c != 256) {
                 for (int i=max(d,0);i<=MAXO;++i) {
