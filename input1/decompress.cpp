@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int N=1e6;
-int b_s,cur;
 unsigned char b[N],B[N];
-int S,I,A;
+int S,I,A,R;
 
 typedef unsigned long long ull;
 ull C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v;
@@ -61,7 +60,7 @@ main() {
     S=fread(B,1,N,fopen("c","rb"));
     A=0x80;
 
-    cur=-1;
+    R=-1;
     f[0][0]=Model();
 
     ull h=C;
@@ -74,8 +73,8 @@ main() {
     for (;;) {
         e.clear();
         k=0;
-        if(!~cur)d=-1;else for (d=0;cur - d >= 0 && d<MAXO;++d) {
-            k=k << 8 | b[cur - d];
+        if(!~R)d=-1;else for (d=0;R - d >= 0 && d<MAXO;++d) {
+            k=k << 8 | b[R - d];
             if(f[d+1].count(k) == 0) {
                 k >>= 8;
                 break;
@@ -100,11 +99,11 @@ main() {
         for (int i=max(d,0);i<=MAXO;++i) {
             if(!f[i].count(k))f[i][k]=Model();
             f[i][k].u(c);
-            if(cur-i+1)
-                k=k<<8|b[cur-i];
+            if(R-i+1)
+                k=k<<8|b[R-i];
             else break;
         }
-        b[++cur]=c;
+        b[++R]=c;
         cout<<bitset<8>(c);
     }
 }
