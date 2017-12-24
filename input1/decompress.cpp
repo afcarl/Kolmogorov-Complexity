@@ -21,9 +21,9 @@ struct Model {
     }
 };
 map<ull, Model> f[MAXO + 1];
-set<int> ex_mask;
+set<int> ex_m;
 int get_d() {
-    ex_mask.clear();
+    ex_m.clear();
     ull k = 0;
     if (cur == -1) return -1;
     int d = 1;
@@ -49,17 +49,17 @@ bool get_char(int &c, ull r, ull l, int&d, ull&tot, ull&o, ull&h) {
     tot = 0;
     Model*m = &f[d][k];
     for (int i = 0; i < 257; ++i)
-        if (ex_mask.find(i) == ex_mask.end())
+        if (ex_m.find(i) == ex_m.end())
             tot += m->f[i];
     v = (l * tot - 1) / r;
 
     tot = 0;
     c = -1;
     for (int i = 0; i < 256; ++i)
-        if (ex_mask.find(i) == ex_mask.end()) {
+        if (ex_m.find(i) == ex_m.end()) {
             int t = m->f[i];
             tot += t;
-            if (t != 0) ex_mask.insert(i);
+            if (t != 0) ex_m.insert(i);
             if (tot > v && c == -1) {
                 o = tot - t;
                 h = tot;
@@ -93,22 +93,19 @@ void update(int c, int d) {
 }
 
 unsigned char ibuf[N];
-int ibuf_size, icur, mask;
+int ibuf_size, icur, m;
 bool next_bit() {
-    bool ret = mask & ibuf[icur];
-    mask >>= 1;
-    if (mask == 0) {
-        mask = 0x80;
-        if (icur < ibuf_size)
-            ++icur;
-        else ibuf[icur] = 0;
+    bool ret = m & ibuf[icur];
+    m >>= 1;
+    if (m == 0) {
+        m = 0x80;
+        icur += icur<ibuf_size?1:ibuf[icur]=0;
     }
     return ret;
 }
 int main() {
     ibuf_size = fread(ibuf, 1, N, fopen("c", "rb"));
-    icur = 0;
-    mask = 0x80;
+    m = 0x80;
 
     cur = -1;
     f[0][0]=Model();
