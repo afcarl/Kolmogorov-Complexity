@@ -51,7 +51,7 @@ main(){
     S=fread(B,1,N,fopen("c","rb"));A=0x80;R=-1;
     f[0][0]=Model();
 
-    ull h=C,o=0,V=0,_tot,_o,_h;
+    ull h=C,o=0,V=0,Z,X,Y;
     int d,c;
     bool escape;
     V = B[0] << 16 | B[1] << 8 | B[2];
@@ -68,13 +68,13 @@ main(){
         }
         do {
             ull range=h - o + 1;
-            escape=get_char(c,range,V - o + 1,d,_tot,_o,_h);
+            escape=get_char(c,range,V - o + 1,d,Z,X,Y);
 
 
 
 
-            h=o + (range * _h) / _tot - 1;
-            o=o + (range * _o) / _tot;
+            h=o + (range * Y) / Z - 1;
+            o=o + (range * X) / Z;
             V:
                 if(o>=H)
                     V-=H,o-=H,h-=H; 
