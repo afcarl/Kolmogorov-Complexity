@@ -35,15 +35,15 @@ int get_ord() {
     return ord - 1;
 }
 
-bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
+bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&o, ull&h) {
     ull k = 0, v;
     for (int i = 0; i < ord; ++i)
         k = k << 8 | buf[cur - i];
     if (ord == -1) {
         tot = 257;
         v = (l * tot - 1) / r;
-        c = low = v;
-        high = low + 1;
+        c = o = v;
+        h = o + 1;
         return false;
     }
     tot = 0;
@@ -61,16 +61,16 @@ bool get_char(int &c, ull r, ull l, int&ord, ull&tot, ull&low, ull&high) {
             tot += t;
             if (t != 0) ex_mask.insert(i);
             if (tot > v && c == -1) {
-                low = tot - t;
-                high = tot;
+                o = tot - t;
+                h = tot;
                 c = i;
                 v = MAXC;
             }
         }
     if (c == -1) {
         c = 256;
-        low = tot;
-        high = tot = tot + m->f[256];
+        o = tot;
+        h = tot = tot + m->f[256];
         --ord;
         return true;
     }
@@ -115,9 +115,9 @@ void decompress() {
     cur = -1;
     f[0][0]=Model();
 
-    ull high = MAXC;
-    ull low = 0;
-    ull value = 0, _tot, _low, _high;
+    ull h = MAXC;
+    ull o = 0;
+    ull value = 0, _tot, _o, _h;
     int ord, c;
     bool escape;
     for (int i = 0; i < 16; ++i)
@@ -125,24 +125,24 @@ void decompress() {
     for (;;) {
         ord = get_ord();
         do {
-            ull range = high - low + 1;
-            escape = get_char(c, range, value - low + 1, ord, _tot, _low, _high);
-            high = low + (range * _high) / _tot - 1;
-            low = low + (range * _low) / _tot;
+            ull range = h - o + 1;
+            escape = get_char(c, range, value - o + 1, ord, _tot, _o, _h);
+            h = o + (range * _h) / _tot - 1;
+            o = o + (range * _o) / _tot;
             for(;;) {
-                if (high < HALF) {
-                } else if (low >= HALF) {
+                if (h < HALF) {
+                } else if (o >= HALF) {
                     value -= HALF;
-                    low -= HALF;
-                    high -= HALF;
-                } else if (low >= QUAR && high < THRQ) {
+                    o -= HALF;
+                    h -= HALF;
+                } else if (o >= QUAR && h < THRQ) {
                     value -= QUAR;
-                    low -= QUAR;
-                    high -= QUAR;
+                    o -= QUAR;
+                    h -= QUAR;
                 } else break;
-                low <<= 1;
-                high <<= 1;
-                high++;
+                o <<= 1;
+                h <<= 1;
+                h++;
                 value <<= 1;
                 value += next_bit() ? 1 : 0;
             }
