@@ -3,7 +3,7 @@ using namespace std;
 const int N=1e6;
 int b_s,cur;
 unsigned char b[N],B[N];
-int B_s,I,m;
+int S,I,m;
 
 typedef unsigned long long ull;
 ull C=65535,Q=16384,H=Q*2,T=Q*3,k,v;
@@ -58,7 +58,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
     return false;
 }
 main() {
-    B_s=fread(B,1,N,fopen("c","rb"));
+    S=fread(B,1,N,fopen("c","rb"));
     m=0x80;
 
     cur=-1;
@@ -99,7 +99,7 @@ main() {
                 } else break;
                 o*=2;h=h*2+1;
                 V=V*2+(bool)(m&B[I]);
-                m/=2;m=!m?I+=I<B_s?1:B[I]=0,0x80:m;
+                m/=2;m=!m?I+=I<S?1:B[I]=0,0x80:m;
             }
             if(c != 256) {
                 for (int i=max(d,0);i<=MAXO;++i) {
