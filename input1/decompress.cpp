@@ -67,14 +67,14 @@ main(){
             }
         }
         do {
-            ull range=h - o + 1;
-            escape=get_char(c,range,V - o + 1,d,Z,X,Y);
+            ull r=h - o + 1,l=V - o + 1;
+            escape=get_char(c,r,l,d,Z,X,Y);
 
 
 
 
-            h=o + (range * Y) / Z - 1;
-            o=o + (range * X) / Z;
+            h=o + (r * Y) / Z - 1;
+            o=o + (r * X) / Z;
             V:
                 if(o>=H)
                     V-=H,o-=H,h-=H; 
