@@ -12,12 +12,12 @@ struct D{
 };
 map<ull,D> f[5];
 main(){
-    S=fread(B,1,N,fopen("c","rb"));A=0x80;R=-1;
+    S=fread(B,1,N,fopen("c","rb"));A=128;R=-1;
     f[0][0]=D();
 
     ull h=C,o=0,V=0,Z,X,Y;
     int d,c,E;
-    V = B[0] << 16 | B[1] << 8 | B[2];
+    V = *B << 16 | B[1] << 8 | B[2];
     I = 3;
     for (;;) {
         memset(e,0,257*4);
