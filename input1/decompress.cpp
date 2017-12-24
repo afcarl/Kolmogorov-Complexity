@@ -87,17 +87,15 @@ main() {
             h=o + (range * _h) / _tot - 1;
             o=o + (range * _o) / _tot;
             V:
-                if(h >= H) {
                 if(o >= H) {
                     V -= H;
                     o -= H;
                     h -= H;
-                } else if(o >= Q && h < T) {
+                } else if(o >= Q && h < T&&h >= H) {
                     V -= Q;
                     o -= Q;
                     h -= Q;
-                } else goto E;
-                }
+                } else if(h >= H)goto E;
                 o*=2;h=h*2+1;
                 V=V*2+(bool)(A&B[I]);
                 A/=2;A=!A?I+=I<S?1:B[I]=0,0x80:A;
