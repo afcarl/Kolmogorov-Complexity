@@ -19,16 +19,15 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
         h=o + 1;
         return false;
     }
-
     tot=0;
     Model*m=&f[d][k];
-    for (int i=0;i < 257;++i)
-            tot += m->f[i]*!e[i];
+    int i;
+    for (i=0;i < 257;++i)tot += m->f[i]*!e[i];
     v=(l * tot - 1) / r;
 
     tot=0;
     c=-1;
-    for (int i=0;i < 256;++i)
+    for (i=0;i < 256;++i)
         if(!e[i]) {
             int t=m->f[i];
             tot += t;
