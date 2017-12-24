@@ -4,10 +4,12 @@ using namespace std;
 const int N = 1e6;
 unsigned char buf[N];
 int buf_size, cur;
-
 typedef unsigned long long ull;
-const ull MAXC = 65535;
-const ull QUAR = 16384;
+const ull CODE_VALUE_BITS  = 16;
+const ull FREQUENCY_BITS = 16;
+const ull MAXC = (1ull << CODE_VALUE_BITS) - 1;
+const ull MAXT = (1ull << FREQUENCY_BITS) - 1;
+const ull QUAR = (1ull << CODE_VALUE_BITS - 2);
 const ull HALF = QUAR * 2;
 const ull THRQ = QUAR * 3;
 
