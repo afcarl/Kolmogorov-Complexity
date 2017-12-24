@@ -46,13 +46,12 @@ main(){
                     if(!e[i]) {
                         int t=m->f[i];
                         Z += t;
-                        if(t != 0) e[i]=1;
-                        if(Z > v) {
-                            X=Z - t;
-                            Y=Z;
-                            c=i;
+                        e[i]=!!t;
+                        if(Z > v)
+                            X=Z - t,
+                            Y=Z,
+                            c=i,
                             v=C;
-                        }
                     }
                     ++Z;
                 if(c>>8) {
