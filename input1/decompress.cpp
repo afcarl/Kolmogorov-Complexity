@@ -17,7 +17,7 @@ main(){
     V = *B << 16 | B[1] << 8 | B[2];
     I = 3;
     for (;;) {
-        fill(e,&i,0);
+        fill(e,e+257,0);
         k=0;
         if(!~R)d=-1;else for(d=0;R-d+1&&d<4;++d) {
             k=k << 8 | b[R - d];
