@@ -24,14 +24,6 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
         h=o + 1;
         return false;
     }
-    ull j = k;
-    k=0;
-    for (int i=0;i < d;++i)
-        k=k << 8 | b[cur - i];
-    if (j != k) {puts("");
-        cout << j << ' ' << k;
-        exit(0);
-    }
 
     tot=0;
     Model*m=&f[d][k];
@@ -59,7 +51,7 @@ bool get_char(int &c,ull r,ull l,int&d,ull&tot,ull&o,ull&h) {
         o=tot;
         h=tot=tot + m->f[256];
         --d;
-        k = j >> 8;
+        k >>= 8;
         return true;
     }
     tot += m->f[256];
