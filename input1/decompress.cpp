@@ -56,15 +56,15 @@ main(){
             }
             h=o + r * Y / Z - 1;
             o+=r * X / Z;
-            V:
+            for(;;){
                 if(o>=H)
                     V-=H,o-=H,h-=H; 
                     else if(o>=Q&&h<T)V-=Q,o-=Q,h-=Q;
-                else if(h>=H)goto E;
+                else if(h>=H)break;
                 o*=2;h=h*2+1;
                 V=V*2+!!(A&B[I]);
                 A/=2;A=!A?I+=I<S?1:B[I]=0,128:A;
-            goto V;E:;
+            }
         } while(E);
         if(c>>8) break;
         for (i=d+!~d;i<5;++i) {
