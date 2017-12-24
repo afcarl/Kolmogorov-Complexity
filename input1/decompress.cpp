@@ -100,9 +100,10 @@ main() {
                 o*=2;h=h*2+1;
                 V=V*2+(bool)(m&B[I]);
                 m/=2;m=!m?I+=I<S?1:B[I]=0,0x80:m;
-            goto V;E:
-            if(c != 256) {
-                for (int i=max(d,0);i<=MAXO;++i) {
+            goto V;E:;
+        } while(escape);
+        if(c == 256) break;
+        for (int i=max(d,0);i<=MAXO;++i) {
                     if(!f[i].count(k))f[i][k]=Model();
                     f[i][k].u(c);
                     if(cur - i >= 0)
@@ -111,8 +112,5 @@ main() {
                 }
                 b[++cur]=c;
                 cout<<bitset<8>(c);
-            }
-        } while(escape);
-        if(c == 256) break;
     }
 }
