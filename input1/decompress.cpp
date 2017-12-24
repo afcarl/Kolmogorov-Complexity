@@ -108,8 +108,7 @@ main() {
                     h -= Q;
                 } else break;
                 o*=2;h=h*2+1;
-                V <<= 1;
-                V += next_bit() ? 1 : 0;
+                V=V*2+next_bit();
             }
             if(c != 256) {
                 for (int i=max(d,0);i<=MAXO;++i) {
