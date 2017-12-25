@@ -1,2 +1,2 @@
 #include<cstdio>
-int i,j;main(){for(;i<4096;i++)for(j=13;--j;putchar((i>>1^i)>>12-j&1^48));}
+int i,j;main(){for(;i<4096;++i)for(j=0;j<12;)putchar("0110"[i>>j++&3]);}
