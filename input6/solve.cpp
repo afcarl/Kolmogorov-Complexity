@@ -1,2 +1,2 @@
 #include<cstdio>
-main(i){for(--i;i<49153;)putchar("0110"[i/12>>i++%12&3]);}
+int i;main(){for(;i<49152;)putchar("0110"[i/12>>i++%12&3]);}
