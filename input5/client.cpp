@@ -9,8 +9,10 @@
 #include <stdlib.h>     /* for exit() */
 FILE*fout;
 void output(char*buf, int size) {
-    buf[size] = 0;
-    fprintf(fout, "%s", buf);
+    for (int i = 0; i < size; ++i)
+        for (int j = 128; j; j/=2) {
+            putc("01"[(j&buf[i])>0], fout);
+        }
 }
 
 #define RCVBUFSIZE 65536   /* Size of receive buffer */
