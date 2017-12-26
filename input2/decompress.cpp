@@ -3,7 +3,7 @@ using namespace std;
 const int N=1e6;
 unsigned char b[N],B[N];
 typedef long long U;
-U C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y,W=256,S,I=3,A,R,e[257],i,d,c,E;
+U C=(1<<24)-1,Q=1<<22,H=Q*2,T=Q*3,k,v,h=C,o,V,Z,X,Y,W=256,S,I=3,A=128,R=-1,e[257],i,d,c,E;
 struct D{
     map<int,int> f;int c;
     D(){c=f[W]=1;}
@@ -11,7 +11,7 @@ struct D{
 };
 map<U,D> f[5];
 main(){
-    S=fread(B,1,N,fopen("c","rb"));A=128;R=-1;
+    S=fread(B,1,N,fopen("c","rb"));
     f[0][0]=D();
     V = *B << 16 | B[1] *W | B[2];
     for (;;k=0) {
