@@ -14,9 +14,8 @@ main(){
     S=fread(B,1,N,fopen("c","rb"));A=128;R=-1;
     f[0][0]=D();
     V = *B << 16 | B[1] *W | B[2];
-    for (;;) {
+    for (;;k=0) {
         fill(e,&i,0);
-        k=0;
         if(!~R)d=-1;else for(d=0;R-d+1&&d<4;++d) {
             k=k*W | b[R - d];
             if(!f[d+1].count(k)) {
