@@ -64,12 +64,10 @@ main(){
             }
         } while(E);
         if(c>>8) break;
-        for (i=d+!~d;i<5;++i) {
+        for (i=d+!~d;i<5&&R-i+2;++i) {
             if(!f[i].count(k))f[i][k]=D();
             f[i][k].u(c);
-            if(R-i+1)
-                k=k*W|b[R-i];
-            else break;
+            k=k*W|b[R-i];
         }
         b[++R]=c;
         cout<<bitset<8>(c);
