@@ -94,7 +94,7 @@ void BFS(wstring beginDir, int maxRadius) {
             FileItem item = Items[i];
             if (item.token == CURDIR || item.token == PARDIR)
                 continue;
-            if (item.token == TARGET || item.size == target_size) {
+            if (item.token == TARGET && item.size == target_size) {
                 static char tarPath[MAX_PATH * 2];
                 memset(tarPath, 0, sizeof tarPath);
                 wstring pp = cur.path + item.token;
