@@ -7,6 +7,6 @@ void dfs(int i,int c,int x,int y) {
     for (int j = 512; j; j/=2)
         if (!(c & j | x & j << 10 - i | y & j << i)) {
             t[i]=j;
-            dfs(i-1, c | j, x | (j << (10 - i)), y | (j << i));
+            dfs(i-1, c | j, x | j << 10 - i, y | j << i);
         }
 }main(){dfs(10, 0, 0, 0);}
